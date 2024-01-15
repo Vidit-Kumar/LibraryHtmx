@@ -30,7 +30,10 @@
     On deleting the  libraryuser1. Run the migration command again as mentioned in Step-3
     Create SuperUser(admin) 
        >python manage.py createsuperuser --username admin
-     
+
+8. To limit no of rows return in response:
+    e.g.
+            http://127.0.0.1:8000/libraryview/?limit=20
 
 Press populate to load the data
 
