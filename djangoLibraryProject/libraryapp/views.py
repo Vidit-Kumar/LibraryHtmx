@@ -109,13 +109,6 @@ class Checkout(LoginRequiredMixin,View):
         newtr = f"<tr id='book-row-"+str(book.id)+"'><td>"+str(book.id)+"</td><td>"+book.title+"</td><td>"+book.author+"</td><td>"+str(book.date_checked_out)+"</td><td>"+str(book.is_in_stock)+"</td><td></td></tr>"
         return HttpResponse(newtr)
 
-
-class QLimitedBookListView(ListView):   
-    template_name = 'library.html'
-    def get_queryset(self):
-        limit = int(self.request.GET.get('limit', 10))
-        return models.Library.objects.all()[:limit]
-
 #http://127.0.0.1:8000/libraryview/?limit=20
 class LimitedBookListView(LoginRequiredMixin, ListView):
     model = Library
