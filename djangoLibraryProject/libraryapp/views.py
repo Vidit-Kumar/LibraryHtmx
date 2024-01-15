@@ -7,6 +7,8 @@ from .forms import RegisterUserForm, LoginForm
 from django.views.generic import TemplateView
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.core.serializers import serialize
+from . import models
 # Create your views here.
 
 class UserSignup(TemplateView):
@@ -77,3 +79,22 @@ class UserLogout(LoginRequiredMixin, TemplateView):
     def get(self, request):
         logout(request)
         return redirect('login')
+
+class Checkout(LoginRequiredMixin,View):
+
+    def post(self, request):
+        try:
+            
+            book_id = request.POST.get('pk')
+            book = models.Library.objects.get(pk=book_id)
+        except models.Library.DoesNotExist:
+            return Response({"error": "Book not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        if not book.is_in_stock:
+            return Response({"error": "Book already checked out"}, status=status.HTTP_409_CONFLICT)
+
+        book.is_in_stock = False
+        book.save()  # Saves and updates dateCheckedOut
+        newtr = f"<tr id='book-row-"+str(book.id)+"'><td>"+str(book.id)+"</td><td>"+book.title+"</td><td>"+book.author+"</td><td>"+str(book.date_checked_out)+"</td><td>"+str(book.is_in_stock)+"</td><td></td></tr>"
+        return HttpResponse(newtr)
+        

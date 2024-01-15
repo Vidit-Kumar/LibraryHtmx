@@ -25,22 +25,7 @@ class CheckoutEndpoint(APIView):
         book.is_in_stock = False
         book.save()  # Saves and updates dateCheckedOut
         book_serializer = serializers.LibraryModelSerializer(book)  # Serialize the updated book
-        return Response(book_serializer.data, status=status.HTTP_200_OK)
-
-    def post_remove(self, request, *args, **kwargs):
-        book_id = request.data['pk']
-        book = models.Library.objects.get(pk=book_id)
-        if book.isInStock:
-            book.isInStock = False
-            book_serializer = serializers.LibraryModelSerializer(data=model_to_dict(book))
-            if book_serializer.is_valid():
-                book.save()
-                book = models.Library.objects.get(pk=book_id) #dateCheckedOut is an auto_field so query for update and add to return
-                return_dict = model_to_dict(book)
-                return_dict['date_checked_out'] = book.dateCheckedOut
-                return JsonResponse(return_dict, status=status.HTTP_201_CREATED)
-            else:
-                return Response(book_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(book_serializer.data, status=status.HTTP_200_OK)    
 
 
 class BooksEndpoint(APIView):

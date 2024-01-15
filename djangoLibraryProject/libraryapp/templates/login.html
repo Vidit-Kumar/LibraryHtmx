@@ -3,7 +3,7 @@
 
 <!-- title block -->
 {% block title_block %}
-    <title>Acai - Login</title>
+    <title>Library - Login</title>
 {% endblock %}
 <!-- /END title block -->
 
@@ -11,7 +11,7 @@
 <!-- body block -->
 {% block body_block %}
 
-<form method="POST">
+<form hx-post="/login/">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Login</button>
