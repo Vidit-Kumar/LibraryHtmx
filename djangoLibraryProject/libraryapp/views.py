@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import login, authenticate, logout
 from .models import Library
 from .forms import RegisterUserForm, LoginForm
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView,ListView
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.core.serializers import serialize
@@ -35,6 +35,17 @@ class LibraryView(LoginRequiredMixin, TemplateView):
         all_books = Library.objects.all().values()
         context = {'books': all_books}
         return render(request, template_name, context=context)
+    model = Library
+    template_name = 'library.html'
+    context_object_name = 'books'
+    def get_queryset(self):
+        limit = int(self.request.GET.get('limit',10))                
+        if limit > 0:
+         all_books = Library.objects.all()[:limit].values()
+        else :
+         all_books = Library.objects.all()
+        context = {'books': all_books}
+        return all_books
 
 
 class UsersView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
@@ -97,4 +108,25 @@ class Checkout(LoginRequiredMixin,View):
         book.save()  # Saves and updates dateCheckedOut
         newtr = f"<tr id='book-row-"+str(book.id)+"'><td>"+str(book.id)+"</td><td>"+book.title+"</td><td>"+book.author+"</td><td>"+str(book.date_checked_out)+"</td><td>"+str(book.is_in_stock)+"</td><td></td></tr>"
         return HttpResponse(newtr)
+
+
+class QLimitedBookListView(ListView):   
+    template_name = 'library.html'
+    def get_queryset(self):
+        limit = int(self.request.GET.get('limit', 10))
+        return models.Library.objects.all()[:limit]
+
+#http://127.0.0.1:8000/libraryview/?limit=20
+class LimitedBookListView(LoginRequiredMixin, ListView):
+    model = Library
+    template_name = 'library.html'
+    context_object_name = 'books'
+    def get_queryset(self):
+        limit = int(self.request.GET.get('limit',10))                
+        if limit > 0:
+         all_books = Library.objects.all()[:limit].values()
+        else :
+         all_books = Library.objects.all()
+        context = {'books': all_books}
+        return all_books
         
