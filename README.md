@@ -35,7 +35,8 @@
     e.g.
             http://127.0.0.1:8000/libraryview/?limit=20
 
-       ![image](https://github.com/Vidit-Kumar/LibraryHtmx/assets/70143937/a196cd1a-d4f5-4449-910b-47312fbf5e83)
+![image](https://github.com/Vidit-Kumar/LibraryHtmx/assets/70143937/ec4b1a2a-a59c-463f-86f6-98bc1369a3cd)
+
 
 
 Press populate to load the data
