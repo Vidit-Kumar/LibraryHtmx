@@ -34,18 +34,7 @@ class LibraryView(LoginRequiredMixin, TemplateView):
         template_name = 'library.html'
         all_books = Library.objects.all().values()
         context = {'books': all_books}
-        return render(request, template_name, context=context)
-    model = Library
-    template_name = 'library.html'
-    context_object_name = 'books'
-    def get_queryset(self):
-        limit = int(self.request.GET.get('limit',10))                
-        if limit > 0:
-         all_books = Library.objects.all()[:limit].values()
-        else :
-         all_books = Library.objects.all()
-        context = {'books': all_books}
-        return all_books
+        return render(request, template_name, context=context)     
 
 
 class UsersView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
@@ -109,17 +98,19 @@ class Checkout(LoginRequiredMixin,View):
         newtr = f"<tr id='book-row-"+str(book.id)+"'><td>"+str(book.id)+"</td><td>"+book.title+"</td><td>"+book.author+"</td><td>"+str(book.date_checked_out)+"</td><td>"+str(book.is_in_stock)+"</td><td></td></tr>"
         return HttpResponse(newtr)
 
+
 #http://127.0.0.1:8000/libraryview/?limit=20
 class LimitedBookListView(LoginRequiredMixin, ListView):
     model = Library
     template_name = 'library.html'
     context_object_name = 'books'
     def get_queryset(self):
-        limit = int(self.request.GET.get('limit',10))                
-        if limit > 0:
-         all_books = Library.objects.all()[:limit].values()
+        limit = self.request.GET.get('limit')        
+        if limit is not None:
+            count = int(self.request.GET.get('limit',10))                
+            all_books = Library.objects.all()[:count].values()
         else :
-         all_books = Library.objects.all()
+            all_books = Library.objects.all()
         context = {'books': all_books}
         return all_books
         
