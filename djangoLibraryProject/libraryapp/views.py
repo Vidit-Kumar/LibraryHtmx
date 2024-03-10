@@ -80,8 +80,8 @@ class UserLogout(LoginRequiredMixin, TemplateView):
         logout(request)
         return redirect('login')
 
-class Checkout(LoginRequiredMixin,View):
-
+class Checkout(LoginRequiredMixin,TemplateView):
+    template_name = 'library.html'
     def post(self, request):
         try:
             

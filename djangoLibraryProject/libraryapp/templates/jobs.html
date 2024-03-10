@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+<!-- title block -->
+{% block title_block %}
+    <title>Jobs</title>
+{% endblock %}
+<!-- body block -->
+{% block body_block %}
+
+
+<table  class="table table-sm table-hover">
+    <thead>
+        <tr>
+        <th>JobId</th>
+        <th>CreatedOn</th>
+        <th>User</th>
+        <th>Status</th>
+        </tr>
+    </thead>
+ 
+   
+    <tbody id="tablebody">
+        {% if jobs %}
+            {% for job in jobs %}
+                <tr>
+                    <td>{{job.jobid}}</td>
+                    <td>{{job.datecreated}}</td>
+                    <td>{{job.user}}</td>
+                    <td>{{job.status}}</td>
+                </tr>
+            {% endfor %}     
+        
+        {%else%}           
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>No Job-Empty</td>
+        </tr>
+        {% endif %}
+    </tbody>     
+    </tbody>           
+</table>
+
+
+<div hx-get="/jobs"  hx-target="#tablebody" hx-swap="outerHTML" hx-trigger="every 3s"/>        
+
+{% endblock %}

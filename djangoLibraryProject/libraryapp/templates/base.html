@@ -37,6 +37,7 @@
                     {% if user.is_authenticated %}
                         {% with request.resolver_match.url_name as url_name %}
                             <ul class="navbar-nav ms-auto">
+                                <li class="nav-item"><a href="{% url 'generate' %}" class="nav-link">Generate </a></li>
                                 <li class="nav-item"><a href="{% url 'library' %}" class="nav-link">Library</a></li>
                                 <li class="nav-item"><a href="{% url 'users' %}" class="nav-link">Users</a></li>
                                 <li class="nav-item"><a href="/admin/"><i class="nav-link bi bi-gear-fill"></i></a></li>

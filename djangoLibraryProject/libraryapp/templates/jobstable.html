@@ -1,0 +1,21 @@
+<tbody id="tablebody">
+    {% if jobs %}
+    {% for job in jobs %}
+        <tr>
+            <td>{{job.jobid}}</td>
+            <td>{{job.datecreated}}</td>
+            <td>{{job.user}}</td>
+            <td>{{job.status}}</td>
+        </tr>
+    {% endfor %} 
+    {% else %} 
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>No Job-Empty</td>
+    </tr>
+    {% endif %}
+</tbody>
+
+

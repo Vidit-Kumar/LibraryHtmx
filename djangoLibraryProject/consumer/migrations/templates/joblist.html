@@ -1,0 +1,20 @@
+<table>
+    <thead>
+        <tr>
+            <th>Job ID</th>
+            <th>Date Created</th>
+            <th>User</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in jobs %}
+            <tr>
+                <td>{{ job.job_id }}</td>
+                <td>{{ job.date_created }}</td>
+                <td>{{ job.user.username }}</td>
+                <td>{{ job.status }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

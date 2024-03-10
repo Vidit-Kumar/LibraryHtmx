@@ -1,6 +1,9 @@
 from django.db import models
 from faker import Faker
+from django.db import models
+from django.contrib.auth.models import User
 import random
+
 # Create your models here.
 
 class Library(models.Model):
@@ -23,10 +26,11 @@ class Library(models.Model):
       verbose_name_plural = 'Library'
 
     @staticmethod
-    def populate_library_data():
-    
-        if Library.objects.all().count() >= 200:
-            return 
+    def populate_library_data(force=False):
+        if  force == False:
+            if Library.objects.all().count() >= 200:
+                return 
+
         fake = Faker()
         for _ in range(200):
             Library.objects.create(
@@ -40,3 +44,28 @@ class Library(models.Model):
                 is_in_stock=random.choice([True, False]),
                 date_checked_out=fake.date_between(start_date='-1y', end_date='today') if random.choice([True, False]) else None,
             )
+        
+class Jobs(models.Model):
+    jobid =  models.AutoField(primary_key=True, verbose_name='JOBID')
+    datecreated = models.DateTimeField(auto_now_add=True)
+    user = models.CharField(max_length=255)
+    status = models.CharField(max_length=255, choices=[('PENDING', 'Pending'), ('PROCESSING', 'Processing'), ('COMPLETED', 'Completed'), ('FAILED', 'Failed')])
+
+    def __str__(self):
+        return f"{self.user} {self.jobid} {self.datecreated} {self.status}"
+    
+    class Meta:
+      db_table = "jobs"
+      verbose_name = 'Jobs'
+      verbose_name_plural = 'Jobs'
+
+
+     
+        
+        
+
+
+
+
+   
+
